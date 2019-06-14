@@ -32,6 +32,25 @@ var questions =[{
 
 //Creating function that removes the start button
 $("#start").on('click',function(){
+   gameplay.begin();
+})
+
+var gameplay ={
+    correct:0,
+    incorrect:0,
+    counter:24,
+    countdown: function(){
+        gameplay.counter --;
+        $('#counter').html(gameplay.counter);
+        if(gameplay.counter<=0){
+            console.log("Shot Clock Violation")
+            gameplay.done();
+        }
+    },
+    begin: function(){
+    timer = setInterval(gameplay.countdown,1000);
+    $('#play').prepend('<h2>Shot Clock: <span id = "counter">24</span> Seconds</h2>');
+        //removes the start button
     $("#start").remove();
     //Looping through the questions
     for(var i =0; i < questions.length; i++){
@@ -42,6 +61,70 @@ $("#start").on('click',function(){
 
     }
     }
-})
+    $("#play").append('<button id="end">BUZZER BEATER</button>');
+
+},
+
+    endGame: function(){
+        $.each($('input[name ="question-0]":checked'), function(){
+            if($(this).val()==questions[0].correctAnswer){
+                gameplay.correct++;
+            } else{
+                gameplay.incorrect++;
+            }
+        });
+        $.each($('input[name ="question-1]":checked'), function(){
+            if($(this).val()==questions[1].correctAnswer){
+                gameplay.correct++;
+            } else{
+                gameplay.incorrect++;
+            }
+        });
+        $.each($('input[name ="question-2]":checked'), function(){
+            if($(this).val()==questions[2].correctAnswer){
+                gameplay.correct++;
+            } else{
+                gameplay.incorrect++;
+            }
+        });
+        $.each($('input[name ="question-3]":checked'), function(){
+            if($(this).val()==questions[3].correctAnswer){
+                gameplay.correct++;
+            } else{
+                gameplay.incorrect++;
+            }
+        });
+        $.each($('input[name ="question-4]":checked'), function(){
+            if($(this).val()==questions[4].correctAnswer){
+                gameplay.correct++;
+            } else{
+                gameplay.incorrect++;
+            }
+        });
+        $.each($('input[name ="question-5]":checked'), function(){
+            if($(this).val()==questions[5].correctAnswer){
+                gameplay.correct++;
+            } else{
+                gameplay.incorrect++;
+            }
+        });
+        this.final();
+    },
+    final: function(){
+        clearInterval(timer);
+        $('#play h2').remove();
+        $('#play').html("<h2>Times Up!</h2>");
+        $('#play').append("<h3>Makes: " + gameplay.correct+"</h3>" );
+        $('#play').append("<h3>Misses: " + gameplay.incorrect+"</h3>" );
+
+
+
+
+
+
+    }
+}
+
+
 
 
